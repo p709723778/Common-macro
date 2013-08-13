@@ -19,6 +19,12 @@
 //-------------------获取设备大小-------------------------
 
 
+//App
+#define kApp ((AppDelegate *)[UIApplication sharedApplication].delegate)
+#define kNav ((AppDelegate *)[UIApplication sharedApplication].delegate.navigationController)
+
+
+
 //-------------------打印日志-------------------------
 //DEBUG  模式下打印日志,当前行
 #ifdef DEBUG
@@ -168,6 +174,8 @@ description:__VA_ARGS__];                             \
 
 
 //----------------------图片----------------------------
+//建议使用前两种宏定义,性能高于后者
+
 
 //读取本地图片
 #define LOADIMAGE(file,ext) [UIImage imageWithContentsOfFile:[[NSBundle mainBundle]pathForResource:file ofType:ext]]
@@ -178,7 +186,12 @@ description:__VA_ARGS__];                             \
 //定义UIImage对象
 #define ImageNamed(_pointer) [UIImage imageNamed:[UIUtil imageName:_pointer]]
 
-//建议使用前两种宏定义,性能高于后者
+
+//可拉伸的图片
+
+#define ResizableImage(name,top,left,bottom,right) [[UIImage imageNamed:name] resizableImageWithCapInsets:UIEdgeInsetsMake(top,left,bottom,right)]
+#define ResizableImageWithMode(name,top,left,bottom,right,mode) [[UIImage imageNamed:name] resizableImageWithCapInsets:UIEdgeInsetsMake(top,left,bottom,right) resizingMode:mode]
+
 //----------------------图片----------------------------
 
 
@@ -275,6 +288,29 @@ return nil; \
 return self; \
 }
 
+//打印位置,大小
+#ifdef DEBUG
+#define DNSLogPoint(p) NSLog(@&quot;%f,%f&quot;, p.x, p.y);
+#define DNSLogSize(p) NSLog(@&quot;%f,%f&quot;, p.width, p.height);
+#define DNSLogRect(p) NSLog(@&quot;%f,%f,%f,%f&quot;, p.origin.x, p.origin.y, p.size.width, p.size.height,);
+#else
+#define DNSLogPoint(p);
+#define DNSLogSize(p);
+#define DNSLogRect(p);
+#endif
 
+//拨打电话
+#define canTel                 ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"tel:"]])
+#define tel(phoneNumber)       ([[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel:%@",phoneNumber]]])
+#define telprompt(phoneNumber) ([[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"telprompt:%@",phoneNumber]]])
+
+//打开URL
+#define canOpenURL(appScheme) ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:appScheme]])
+#define openURL(appScheme) ([[UIApplication sharedApplication] openURL:[NSURL URLWithString:appScheme]])
+
+//读取文件的文本内容,默认编码为UTF-8
+#define FileString(name,ext)            [[NSString alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:(name) ofType:(ext)] encoding:NSUTF8StringEncoding error:nil]
+#define FileDictionary(name,ext)        [[NSDictionary alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:(name) ofType:(ext)]]
+#define FileArray(name,ext)             [[NSArray alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:(name) ofType:(ext)]]
 
 #endif
