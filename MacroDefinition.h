@@ -313,4 +313,9 @@ return self; \
 #define FileDictionary(name,ext)        [[NSDictionary alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:(name) ofType:(ext)]]
 #define FileArray(name,ext)             [[NSArray alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:(name) ofType:(ext)]]
 
+
+//System  剪贴板
+#define PasteString(string)   [[UIPasteboard generalPasteboard] setString:string];
+#define PasteImage(image)     [[UIPasteboard generalPasteboard] setImage:image];
+
 #endif
